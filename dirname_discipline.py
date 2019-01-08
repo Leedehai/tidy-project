@@ -4,7 +4,7 @@
 #
 # File: dirname_discipline.py
 # ---------------------------
-# Check directory name discipline
+# Check directory name discipline of current working directory
 
 import os, sys
 
@@ -120,19 +120,15 @@ def check_cwd():
 
     return True if not has_error else False
 
-if __name__ == "__main__":
+def main():
     import argparse
-    parser = argparse.ArgumentParser(description="Check directory name discipline", epilog="if the target is a repo, then it should be your current working directory")
-    parser.add_argument("target", nargs='+', help="path to repo directory or one file")
+    parser = argparse.ArgumentParser(
+        description="Check directory name discipline of current working directory")
     args = parser.parse_args()
 
-    if len(sys.argv[1:]) != 1:
-        print("[Error] need path to repo as argument")
-        sys.exit(1)
+    # check current working directory
+    success = check_cwd()
+    return 0 if success else 1
 
-    REPO_DIR = os.path.abspath(sys.argv[1])
-    if not os.path.samefile(REPO_DIR, "."):
-        print("[Error] you are not at project root")
-        sys.exit(1)
-
-    check_cwd()
+if __name__ == "__main__":
+    sys.exit(main())
