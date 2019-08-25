@@ -5,6 +5,7 @@
 # File: dirname_discipline.py
 # ---------------------------
 # Check directory name discipline of current working directory
+# NOTE it runs on all files, not just staged ones.
 
 import os, sys
 

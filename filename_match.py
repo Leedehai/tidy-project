@@ -4,7 +4,8 @@
 #
 # File: filename_match.py
 # ---------------------------
-# Check whether filename matches with the file name in the head comment
+# Check whether filename matches with the file name in the head comment.
+# NOTE it only runs on git-staged files, and it does NOT modify files.
 
 import os, sys, re
 import tidy_utils.git_utils as git_utils

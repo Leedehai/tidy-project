@@ -25,8 +25,8 @@ def sizeof_fmt(num, suffix='B'):
 def print_decription(filenames):
     print(" - tidy.dirname_discipline")
     print(" - tidy.filename_match")
-    print(" - tidy.whitespace")
     print(" - tidy.clang_format")
+    print(" - tidy.whitespace")
     if len(filenames) > 0:
         print("\n".join([
             "\t%s (%s)" % (item, sizeof_fmt(os.stat(item).st_size)) for item in filenames
@@ -43,10 +43,10 @@ def check_each_status(dirname_passed, whitespace_passed, filename_passed, clang_
         print("[x] tidy: error at tidy.dirname_discipline")
     if not filename_passed:
         print("[x] tidy: error at tidy.filename_match")
-    if not whitespace_passed:
-        print("[x] tidy: error at tidy.whitespace")
     if not clang_format_done:
         print("[x] tidy: error at tidy.clang_format")
+    if not whitespace_passed:
+        print("[x] tidy: error at tidy.whitespace")
     return all([dirname_passed, whitespace_passed, filename_passed, clang_format_done])
 
 def check_clang_format_prereq(silent_if_ok):
@@ -67,13 +67,13 @@ def run_file(filename, silent_if_ok=False, with_description=False):
     dirname_passed = True
     print_stage(silent_if_ok, "tidy.filename_match: running...")
     filename_passed = filename_match.check_file(filename)
-    print_stage(silent_if_ok, "tidy.whitespace: running...")
-    whitespace_passed = whitespace.check_file(filename=filename, silent_if_ok=silent_if_ok)[0]
     if check_clang_format_prereq(silent_if_ok) == True:
         print_stage(silent_if_ok, "tidy.clang_format: running...")
         clang_format_done = clang_format.format_file(filename=filename, silent_if_ok=silent_if_ok)
     else:
         clang_format_done = True # assume success, as it's not essential
+    print_stage(silent_if_ok, "tidy.whitespace: running...")
+    whitespace_passed = whitespace.check_file(filename=filename, silent_if_ok=silent_if_ok)[0]
 
     return check_each_status(dirname_passed, whitespace_passed, filename_passed, clang_format_done)
 
@@ -85,17 +85,17 @@ def run_repo(silent_if_ok=False, with_description=False):
     if with_description:
         print_decription(git_utils.load_staged_created_or_modified_files())
 
-    print_stage(silent_if_ok, "tidy.dirname_discipline: running...")
+    print_stage(silent_if_ok, "tidy.dirname_discipline: on all files")
     dirname_passed = dirname_discipline.check_cwd()
-    print_stage(silent_if_ok, "tidy.filename_match: running...")
+    print_stage(silent_if_ok, "tidy.filename_match:     on staged files")
     filename_passed = filename_match.check_dir(".")[0]
-    print_stage(silent_if_ok, "tidy.whitespace: running...")
-    whitespace_passed = whitespace.check(target=".", silent_if_ok=silent_if_ok)[0]
     if check_clang_format_prereq(silent_if_ok) == True:
-        print_stage(silent_if_ok, "tidy.clang_format: running...")
+        print_stage(silent_if_ok, "tidy.clang_format:       on staged files")
         clang_format_done = clang_format.format_cwd(silent_if_ok=silent_if_ok)
     else:
         clang_format_done = True # assume success, as it's not essential
+    print_stage(silent_if_ok, "tidy.whitespace:         on staged files")
+    whitespace_passed = whitespace.check(target=".", silent_if_ok=silent_if_ok)[0]
 
     # remove dumped
     git_utils.remove_dumped()

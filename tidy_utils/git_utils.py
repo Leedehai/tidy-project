@@ -7,6 +7,7 @@
 
 import subprocess, os
 
+# it decorates paths in the input list: passthrough if the file exists, prepend "- " if not.
 def _decorate_files(file_list):
     return [ (f if os.path.exists(f) else "- %s" % f) for f in file_list ]
 
@@ -54,10 +55,10 @@ def get_staged_deleted_files():
 
 FILE_LIST_DUMP = "git-status.log"
 def dump_staged_changed_files():
-    # collect staged files that are created/modified, but not deleted, reported by 'git status'
+    # collect git-staged files that are created/modified, but not deleted, reported by 'git status'
     decorated_files = get_staged_changed()
     with open(FILE_LIST_DUMP, 'w') as dump: # overwrite if exists
-        dump.write("# staged files only\n")
+        dump.write("# git-staged files only\n")
         dump.write("\n".join(decorated_files))
 
 def _load_from_log(filename):

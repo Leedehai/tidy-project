@@ -9,7 +9,7 @@ These commandline utilities are responsible for different aspects. For details, 
 - `clang_format.py`: format a file or the repo with program [clang-format](https://clang.llvm.org/docs/ClangFormat.html) (you need to install it) according to the repo's `.clang-format` file.
 - `whitespace.py`: check whitespace discipline of one file or the repo, e.g. no tabs is C++ files.
 - `filename_match.py`: check whether filename matches with the file name in the head comment of a file.
-- `dirname_discipline`: check directory name discipline, e.g. `unit-test/` exists if `include/` exists, and no conflicting module names.
+- `dirname_discipline.py`: check directory name discipline, e.g. `unit-test/` exists if `include/` exists, and no conflicting module names.
 
 Each script above can be used as a Python library as well.
 
@@ -31,6 +31,6 @@ import tidy.whitespace
 > `all.py` is recommended to be added to Git's `pre-commit` script.
 
 ### Does it scale with large repo?
-Yes. It only checks staged files that are created/modified reported by command `git status`.
+Yes. Beside `dirname_discipline`, it only checks staged files that are created/modified reported by command `git status`.
 
 ###### EOF

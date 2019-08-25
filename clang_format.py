@@ -6,6 +6,7 @@
 # ---------------------------
 # Formats staged modified files, according to project's .clang-format, and restage.
 # Basically does git-clang-format's work, but I'd like to keep dependency small.
+# NOTE it only runs on git-staged files, and it DOES modify files.
 
 import os, sys, subprocess
 import tidy_utils.git_utils as git_utils
@@ -46,7 +47,6 @@ def format_cwd(silent_if_ok=False):
         files = git_utils.get_staged_created_or_modified_files()
 
     if len(files) == 0:
-        print_out(silent_if_ok, "[Info] no staged created/modified file, no work to do")
         return True # assume success
 
     for path in files:

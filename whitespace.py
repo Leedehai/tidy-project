@@ -5,6 +5,7 @@
 # File: whitespace.py
 # ---------------------------
 # Check whitespace discipline of one file or a repo.
+# NOTE it only runs on git-staged files, and it does NOT modify files.
 
 import os, sys
 import tidy_utils.git_utils as git_utils
